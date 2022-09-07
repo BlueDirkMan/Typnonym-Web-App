@@ -1,0 +1,6 @@
+# Ignoring Local Node Modules 
+node_modules
+
+# Personal Note Files
+typing_resources_1.txt
+typing_resources_2.txt
