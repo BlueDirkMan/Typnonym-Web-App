@@ -7,7 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>ERROR</h1>
-    <h2><%= message %> </h2>
+    <h1>Add Score</h1>
+    <form action="/user/<%= searchedUser._id %>/score" method="post">
+        <label for="points">Points: </label>
+        <input type="text" id="points" name="points"> 
+        <button>Submit</button>
+    </form>
 </body>
 </html>

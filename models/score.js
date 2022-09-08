@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const scoreSchema = new mongoose.Schema({
     points: {
         type: Number,
@@ -11,7 +12,7 @@ const scoreSchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
+        ref: "User"
     }
 })
 

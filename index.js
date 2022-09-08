@@ -9,8 +9,11 @@ import mongoose from "mongoose";
 
 //
 import { User } from "./models/user.js"; 
+import { Score } from "./models/score.js";
 import { AppError } from "./utils/AppError.js";
 import { handlerAsync } from "./utils/handlerAsync.js";
+import Joi from "joi";
+import { validateScore } from "./utils/utitlityMiddleware.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -36,6 +39,19 @@ mongoose.connect('mongodb://127.0.0.1:27017/personalTypingApp')
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Routes - Will be restructured
 // Home (also play page)  = /
 // ScoreBoard = /scoreboard
@@ -45,15 +61,15 @@ mongoose.connect('mongodb://127.0.0.1:27017/personalTypingApp')
 // Login Route = /user/:userID/login - i don't think this is how Colt would have structure it
 // Profile = /user/:userID
 
-
 // Homepage + typing page
 app.get("/", (req, res) => {
     res.render("./main/homepage.ejs")
 })
 
 // Scoreboard
-app.get("/scoreboard", (req, res) => {
-    res.render("./main/scoreboard.ejs")
+app.get("/scoreboard", async (req, res) => {
+    const allUser = await User.find({});
+    res.render("./main/scoreboard.ejs", { allUser: allUser})
 })
 
 // Register Form
@@ -87,10 +103,11 @@ app.post("user/login", (req, res) => {
 app.get("/user/:userID", handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const searchedUser = await User.findById(userID)
+    const searchedScore = await Score.find({ user: searchedUser._id}).populate('owner')
     console.log("-------------")
     console.log("Find User For Profile Page")
     console.log(searchedUser)
-    res.render("./user/user_show.ejs", { searchedUser: searchedUser})
+    res.render("./user/user_show.ejs", { searchedUser: searchedUser, searchedScore: searchedScore})
 }))
 
 
@@ -133,6 +150,35 @@ app.delete("/user/:userID", handlerAsync(async (req, res) => {
 }))
 
 
+
+
+
+
+
+// Score adding page - will be done through homepage after sessions is implemented
+app.get("/user/:userID/score", handlerAsync(async (req, res) => {
+    const { userID } = req.params;
+    const searchedUser = await User.findById(userID)
+    res.render("./user/user_score.ejs", { searchedUser: searchedUser })
+}))
+
+
+
+// Score Post Route
+app.post("/user/:userID/score", validateScore, handlerAsync(async (req, res) => {
+    const { userID } = req.params;
+    const newScore = new Score({ points: req.body.points, date: new Date(), owner: userID })
+    const savedScore = await newScore.save()
+    res.redirect(`/user/${userID}`)
+}))
+
+
+
+
+
+
+
+
 // Catch everything that does not match above
 app.all("*", (req, res, next) => {
     next(new AppError("Page Not Found", 404))
@@ -141,7 +187,7 @@ app.all("*", (req, res, next) => {
 // Error Handling Middleware
 app.use((err, req, res, next)=>{
     const { status = 500, message } = err
-    res.status(status).render("error.ejs")
+    res.status(status).render("error.ejs", { message: message})
 })
 
 
