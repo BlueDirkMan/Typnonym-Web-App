@@ -11,18 +11,18 @@
 <body>
     <div>
         <h1>User Register</h1>
-        <form action="/user" method="post">
+        <form action="/user" method="post" novalidate>
             <div>
-                <label for="usernameFormInput">Username: </label>
-                <input type="text" id="usernameFormInput" placeholder="username" name="username">
+                <label for="usernameFormInput" >Username: </label>
+                <input type="text" id="usernameFormInput" placeholder="username" name="username" required>
             </div>
             <div>
                 <label for="emailFormInput">Email Address: </label>
-                <input type="email" id="emailFormInput" placeholder="name@example.com" name="email">
+                <input type="email" id="emailFormInput" placeholder="name@example.com" name="email" required>
             </div>
             <div>
                 <label for="passwordFormInput">Password: </label>
-                <input type="password" id="passwordFormInput" placeholder="password" name="password">
+                <input type="password" id="passwordFormInput" placeholder="password" name="password" required>
             </div>
             <button>Submit</button>
         </form>

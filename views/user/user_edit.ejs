@@ -14,11 +14,11 @@
         <form action="/user/<%= searchedUser._id %>?__method=PATCH" method="post">
             <div>
                 <label for="emailFormInput">Email: </label>
-                <input type="email" id="emailFormInput" placeholder="name@example.com" name="email" value="<%= searchedUser.email %>">
+                <input type="email" id="emailFormInput" placeholder="name@example.com" name="email" value="<%= searchedUser.email %>" required>
             </div>
             <div>
                 <label for="bio">Bio: </label>
-                <textarea id="bioTextArea" maxlength="100" name="bio"><%= searchedUser.bio %></textarea>
+                <textarea id="bioTextArea" maxlength="100" name="bio" required><%= searchedUser.bio %></textarea>
             </div>
             <button>Submit</button>
         </form>

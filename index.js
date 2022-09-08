@@ -9,6 +9,8 @@ import mongoose from "mongoose";
 
 //
 import { User } from "./models/user.js"; 
+import { AppError } from "./utils/AppError.js";
+import { handlerAsync } from "./utils/handlerAsync.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -60,14 +62,14 @@ app.get("/user/register", (req, res) => {
 })
 
 // Register Post Route
-app.post("/user", async (req, res) => {
+app.post("/user", handlerAsync(async (req, res, next) => {
     const { username, password, email } = req.body; // obviously, this won't be actual, we'll use passport
     const newUser = new User({ username, password, email });
     const createNewUser = await newUser.save()
     console.log("-------------")
     console.log("New User Registered")
     res.redirect(`/user/${newUser._id}`)
-})
+}))
 
 // Login Form
 app.get("/user/login", (req, res) => {
@@ -82,14 +84,14 @@ app.post("user/login", (req, res) => {
 
 // Profile/Show Page   --- I don't think we can do this page access until we have authentication and auth
 // We can manually type the ID in though
-app.get("/user/:userID", async (req, res) => {
+app.get("/user/:userID", handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const searchedUser = await User.findById(userID)
     console.log("-------------")
     console.log("Find User For Profile Page")
     console.log(searchedUser)
     res.render("./user/user_show.ejs", { searchedUser: searchedUser})
-})
+}))
 
 
 // Edit Form = /user/:userID/edit
@@ -99,37 +101,48 @@ app.get("/user/:userID", async (req, res) => {
 
 
 // Edit Form Page
-app.get("/user/:userID/edit", async (req, res) => {
+app.get("/user/:userID/edit", handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const searchedUser = await User.findById(userID)
     console.log("-------------")
     console.log("Find User For Edit Page")
     console.log(searchedUser)
     res.render("./user/user_edit.ejs", { searchedUser: searchedUser})
-})
+}))
 
 // Edit Patch Route
-app.patch("/user/:userID", async (req, res) => {
+app.patch("/user/:userID", handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const { email, bio } = req.body
     const editSearchedUser = await User.findByIdAndUpdate(userID, { email: email, bio: bio })
     res.redirect(`/user/${userID}`)
-})
+}))
 
 // Delete Form Page
-app.get("/user/:userID/delete", async (req, res) => {
-    const { userID } = req.params;
-    const searchedUser = await User.findById(userID)
-    res.render("./user/user_delete", { searchedUser: searchedUser })
-})
+app.get("/user/:userID/delete", handlerAsync(async (req, res) => {
+        const { userID } = req.params;
+        const searchedUser = await User.findById(userID)
+        res.render("./user/user_delete", { searchedUser: searchedUser })
+}))
 
 // Delete User Route
-app.delete("/user/:userID", async (req, res) => {
+app.delete("/user/:userID", handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const deleteUser = await User.findByIdAndDelete(userID)
     res.redirect("/")
+}))
+
+
+// Catch everything that does not match above
+app.all("*", (req, res, next) => {
+    next(new AppError("Page Not Found", 404))
 })
 
+// Error Handling Middleware
+app.use((err, req, res, next)=>{
+    const { status = 500, message } = err
+    res.status(status).render("error.ejs")
+})
 
 
 // Which Port
