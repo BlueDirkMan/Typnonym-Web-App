@@ -1,36 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout("/layouts/boilerplate.ejs") %>
+    <div class="main-container">
+        <div class="container">
+            <div class="section timerboard">
+                <div class="timer">
+                    <p><span id="timer-display">10</span>s </p>
+                </div>
+                <div class="round">
+                    <p>Round 1 </p>
+                </div>
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-</head>
+            <div class="section scoreboard">
+                <div class="score">
+                    <p>Score: <span id="score-display">0</span></p>
+                </div>
+                <div class="wpm">
+                    <p>WPM: <span id="wpm-display">0</span></p>
+                </div>
+            </div>
 
-<body>
-    <h1>Home Page</h1>
-    <nav>
-        <div>
-            <a>Typnonym</a>
+            <div class="section instruction-timer">
+                <p id="instruction">Type start to begin</p>
+                <div id="word-display">
+                    <p id="synonym-display">Synonym</p>
+                    <p id="vocab-display">Vocabulary</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <form id="typing-box-form">
+                    <input type="text" class="typing-box" id="typing-box-input" placeholder="start">
+                </form>
+            </div>
+            <button id="restart-button" class="custom-btn btn-16">Restart</button>
+            <form id="save-form">
+                <button class="custom-btn btn-16">Save</button>
+            </form>
         </div>
-        <div>
-            <ul>
-                <li>
-                    <a href="/user/login">Login</a>
-                </li>
-                <li>
-                    <a href="/user/register">Register</a>
-                </li>
-                <li>
-                    <a href="/scoreboard">Scoreboard</a>
-                </li>
-                <li>
-                    <a href="/user/randomID">Profile</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</body>
-
-</html>
+    </div>
+    

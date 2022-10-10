@@ -14,17 +14,30 @@ import { AppError } from "./utils/AppError.js";
 import { handlerAsync } from "./utils/handlerAsync.js";
 import Joi from "joi";
 import { validateScore } from "./utils/utitlityMiddleware.js";
+import engine from "ejs-mate";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+
+// app.engine('ejs', engine);
+// app.use(express.urlencoded({extended: true}));
+// app.use(express.json());
+// app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "/views"));
+// app.use(express.static(path.join(__dirname, "/public")));
+// app.use(methodOverride("__method"));
+
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "/views"));
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("__method"));
+
+app.engine("ejs", engine)
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 
 // Mongoose Connection
@@ -103,10 +116,12 @@ app.post("user/login", (req, res) => {
 app.get("/user/:userID", handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const searchedUser = await User.findById(userID)
-    const searchedScore = await Score.find({ user: searchedUser._id}).populate('owner')
+    const searchedScore = await Score.find({ owner: searchedUser._id}).populate('owner')
     console.log("-------------")
     console.log("Find User For Profile Page")
     console.log(searchedUser)
+    console.log("With Scores: ")
+    console.log(searchedScore)
     res.render("./user/user_show.ejs", { searchedUser: searchedUser, searchedScore: searchedScore})
 }))
 

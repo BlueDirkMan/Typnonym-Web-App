@@ -1,28 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Register</title>
-</head>
-
-<body>
-    <div>
+<% layout("/layouts/boilerplate.ejs") %>
+    <div class="form-box">
         <h1>User Login</h1>
-        <form action="/user/:userID/login" method="post">
+        <form id="form" action="/user/:userID/login" method="post" novalidate>
             <div>
                 <label for="usernameFormInput">Username: </label>
-                <input type="text" id="usernameFormInput" placeholder="username" name="username">
+                <input class="form-input" type="text" id="usernameFormInput" placeholder="username" name="username" required>
+                <div class="error error-username">&nbsp;</div>
             </div>
             <div>
                 <label for="passwordFormInput">Password: </label>
-                <input type="password" id="passwordFormInput" placeholder="password" name="password">
+                <input class="form-input" type="password" id="passwordFormInput" placeholder="password" name="password"
+                    required>
+                <div class="error error-password">&nbsp;</div>
             </div>
             <button>Submit</button>
         </form>
     </div>
-</body>
-
-</html>
