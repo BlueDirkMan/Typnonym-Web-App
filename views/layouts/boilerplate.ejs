@@ -12,28 +12,12 @@
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="first-line">
-                <div class="nav-title"><a href="/">Typnonym</a></div>
-                <div class="toggle-button">
-                    <span class="toggle-button-line"></span>
-                    <span class="toggle-button-line"></span>
-                    <span class="toggle-button-line"></span>
-                </div>
-            </div>
-
-            <div class="nav-links">
-                <ul>
-                    <li><a href="/scoreboard">Scoreboard</a></li>
-                    <li><a href="/user/login">Login</a></li>
-                    <li><a href="/user/register">Register</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <%- include("../partials/navbar.ejs")  %> 
     <div class="main-container">
         <div class="container">
+            <div>
+                <%- include("../partials/flashMessage.ejs")  %> 
+            </div>
             <%- body %>
         </div>
     </div>

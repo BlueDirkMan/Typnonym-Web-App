@@ -57,8 +57,8 @@ form.addEventListener('submit', (event) => {
         }
     } catch { }
     try {
-        if (passwordFormInput.value.length <= 6) {
-            let pushedMessage = "Password must be longer than 6 characters";
+        if (passwordFormInput.value.length <= 5) {
+            let pushedMessage = "Password must be longer than 5 characters";
             errorMessages.password = pushedMessage
             containError = true
         }

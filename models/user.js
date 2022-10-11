@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Score } from "./score.js";
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -20,5 +21,11 @@ const userSchema = new mongoose.Schema({
         default: "This user have not made a bio"
     }
 })
+
+userSchema.post('findOneAndDelete', async function(user) {
+    if (user) {
+        await Score.deleteMany({ owner: user._id })
+    }
+}) 
 
 export const User = mongoose.model("User", userSchema)

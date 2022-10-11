@@ -446,3 +446,17 @@ button {
     display: block;
     text-align: left;
 }
+
+
+/* ------- Flash Messages --------*/
+.success-box {
+    background-color: lightgreen;
+    padding: 10px;
+    box-sizing: border-box;
+} 
+
+.error-box {
+    background-color: #ffcccb;
+    padding: 10px;
+    box-sizing: border-box;
+} 
