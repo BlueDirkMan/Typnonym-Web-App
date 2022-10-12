@@ -1,7 +1,9 @@
-import express from "express";
+import express, { Router } from "express";
 import { User } from "../models/user.js"; 
 import { Score } from "../models/score.js";
 import { handlerAsync } from "../utils/handlerAsync.js";
+import passport from "passport";
+import { isLoggedIn } from "../utils/utitlityMiddleware.js";
 
 export const userRouter = express.Router();
 
@@ -13,13 +15,23 @@ userRouter.get("/register", (req, res) => {
 
 // Register Post Route
 userRouter.post("/", handlerAsync(async (req, res, next) => {
-    const { username, password, email } = req.body; // obviously, this won't be actual, we'll use passport
-    const newUser = new User({ username, password, email });
-    const createNewUser = await newUser.save()
-    console.log("-------------")
-    console.log("New User Registered")
-    req.flash("success", "User Account Registeration Completed")
-    res.redirect(`/user/${newUser._id}`)
+    try {
+        const { username, password, email } = req.body; 
+        const newUser = new User({ username, email });
+        const createdUser = await User.register(newUser, password)
+        console.log("-------------")
+        console.log("New User Registered")
+        console.log(createdUser)
+        req.login(createdUser, err => {
+            if(err) return next(err);
+            req.flash("success", "User Account Registration Completed");
+            res.redirect(`/user/${newUser._id}`);
+        })
+    } catch (error) {
+        req.flash("error", error.message)
+        res.redirect("/user/register")
+    }
+    
 }))
 
 // Login Form
@@ -28,10 +40,25 @@ userRouter.get("/login", (req, res) => {
 })
 
 // Login Post Route
-userRouter.post("/login", (req, res) => {
-    const { username, password } = req.body 
-    res.redirect("/")                           // Decided to do related to login at authorization instead
+userRouter.post("/login", passport.authenticate('local', {failureFlash: true, failureRedirect: "/user/login", keepSessionInfo: true,}), (req, res) => {
+    req.flash("success", "Successfully login")
+    const redirectURL = req.session.lastVisited || "/"
+    console.log(redirectURL)
+    res.redirect(redirectURL)                          
 })
+
+
+// Logout Route
+userRouter.get("/logout", (req, res) => {
+    req.logOut((err) => {
+        if (err) { 
+            return next(err); 
+        }
+        req.flash('success', "Succesfully Logout");
+        res.redirect("/")
+    })   
+})
+
 
 // Profile/Show Page   --- I don't think we can do this page access until we have authentication and auth
 // We can manually type the ID in though
@@ -67,7 +94,7 @@ userRouter.get("/:userID/edit", handlerAsync(async (req, res) => {
 }))
 
 // Edit Patch Route
-userRouter.patch("/:userID", handlerAsync(async (req, res) => {
+userRouter.patch("/:userID", isLoggedIn, handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const { email, bio } = req.body
     const editSearchedUser = await User.findByIdAndUpdate(userID, { email: email, bio: bio })
@@ -93,7 +120,4 @@ userRouter.delete("/:userID", handlerAsync(async (req, res) => {
     req.flash("success", "User Account Deleted")
     res.redirect("/")
 }))
-
-
-
 

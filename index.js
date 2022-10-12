@@ -19,6 +19,9 @@ import { userRouter } from "./routes/userRoutes.js";
 import { scoreRouter } from "./routes/scoreRoutes.js";
 import session from "express-session";
 import flash from "connect-flash";
+import passport from "passport";
+import { Strategy as LocalStrategy } from 'passport-local';
+
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -67,10 +70,20 @@ const sessionCofiguration = {
 app.use(session(sessionCofiguration))
 app.use(flash())
 
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+
 app.use((req, res, next) => {
-    res.locals.flashSuccess = req.flash("success")
-    res.locals.flashError = req.flash("error")
-    next()
+    console.log(req.session)
+    res.locals.flashSuccess = req.flash("success");
+    res.locals.flashError = req.flash("error");
+    res.locals.currentUser = req.user;
+    next();
 })
 
 // Homepage + typing page
