@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { scoreJoiSchema } from "./joiSchema.js"
 import { AppError } from "./AppError.js";
+import { User } from "../models/user.js";
 
 // Middleware to validate score through Joi schema. Throws Error if validation failed, if not passes to next
 export const validateScore = (req, res, next) => {
@@ -25,4 +26,16 @@ export const isLoggedIn = (req, res, next) => {
         return res.redirect("/user/login")
     } 
     next();
+}
+
+// Middleware for authorization, checking whether currentUser._id (logged in user) is the same as 
+// The searchedUser (ex. user1 tries to access edit page of user2 - stop this from happening/working) 
+export const isAccountOwner = async (req, res, next) => {
+    const { userID } = req.params;
+    const searchedUser = await User.findById(userID)
+    if (!req.user || !req.user._id.equals(searchedUser._id)) {
+        req.flash('error', "You do not have permission for that action")
+        return res.redirect("/")
+    } 
+    next()
 }

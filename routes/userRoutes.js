@@ -3,9 +3,9 @@ import { User } from "../models/user.js";
 import { Score } from "../models/score.js";
 import { handlerAsync } from "../utils/handlerAsync.js";
 import passport from "passport";
-import { isLoggedIn } from "../utils/utitlityMiddleware.js";
+import { isLoggedIn, isAccountOwner } from "../utils/utitlityMiddleware.js";
 
-export const userRouter = express.Router();
+export const userRouter = express.Router()
 
 
 // Register Form
@@ -80,7 +80,7 @@ userRouter.get("/:userID", handlerAsync(async (req, res) => {
 
 
 // Edit Form Page
-userRouter.get("/:userID/edit", handlerAsync(async (req, res) => {
+userRouter.get("/:userID/edit", isLoggedIn, isAccountOwner, handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const searchedUser = await User.findById(userID)
     if (!searchedUser) {
@@ -94,7 +94,7 @@ userRouter.get("/:userID/edit", handlerAsync(async (req, res) => {
 }))
 
 // Edit Patch Route
-userRouter.patch("/:userID", isLoggedIn, handlerAsync(async (req, res) => {
+userRouter.patch("/:userID", isLoggedIn, isAccountOwner, handlerAsync(async (req, res) => {
     const { userID } = req.params;
     const { email, bio } = req.body
     const editSearchedUser = await User.findByIdAndUpdate(userID, { email: email, bio: bio })
@@ -103,7 +103,7 @@ userRouter.patch("/:userID", isLoggedIn, handlerAsync(async (req, res) => {
 }))
 
 // Delete Form Page
-userRouter.get("/:userID/delete", handlerAsync(async (req, res) => {
+userRouter.get("/:userID/delete", isLoggedIn, isAccountOwner, handlerAsync(async (req, res) => {
         const { userID } = req.params;
         const searchedUser = await User.findById(userID)
         if (!searchedUser) {
