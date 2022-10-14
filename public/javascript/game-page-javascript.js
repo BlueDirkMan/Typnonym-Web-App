@@ -21,6 +21,8 @@ const instruction = document.getElementById("instruction")
 const wordDisplay = document.getElementById("word-display")
 const restartButton = document.getElementById("restart-button")
 const saveForm = document.getElementById("save-form")
+const keptScoreInput = document.getElementById("kept-score-input")
+const keptWPMInput = document.getElementById("kept-wpm-input")
 
 let currentScore = 0
 let wordIndex = 0
@@ -45,7 +47,7 @@ let wpm = 0
 let gameRestart = 0
 
 let keptScore = 0
-let keptwpm = 0
+let keptWPM = 0
 typingBox.addEventListener("submit", (event) => {
     event.preventDefault()
 })
@@ -163,7 +165,8 @@ const gameLoop = async function () {
     restartButton.classList.toggle('active')
     // We don't want to show the save form before the first gameplay have been completed, so check if save form 
     // have been given the active class (by the end game logic)
-    if (saveForm.classList.contains('active')) {
+    // Also, after having implemented authentication & authorization, save form only shown when logged in
+    if (saveForm && saveForm.classList.contains('active')) {
         saveForm.classList.toggle('active')
     }
 
@@ -189,10 +192,15 @@ const gameLoop = async function () {
             wordDisplay.classList.toggle('active')
             typingInput.setAttribute('placeholder', "start")
 
-            // Keep track of scores gotten
+            // Keep track of scores gotten, so that it may be used to in the async function for saving score
+            // Might not be needed but want to keep identity of currentscore separated from what to save
             keptScore = currentScore
-            keptwpm = wpm
-
+            keptWPM = wpm
+            // Put into a save-form which the input is hidden from user
+            if (saveForm) {
+                keptScoreInput.value = keptScore
+                keptWPMInput.value = keptWPM
+            }
             // Reset Time
             timeLimit = Date.now() + 10000;
             timerTime = 0
@@ -209,7 +217,10 @@ const gameLoop = async function () {
             characterTyped = 0
 
             // Showing & Hiding Buttons
-            saveForm.classList.toggle('active')
+            // Save form only shown when logged in
+            if (saveForm) {
+                saveForm.classList.toggle('active')
+            }
             restartButton.classList.toggle('active')
         }
     }, 100);

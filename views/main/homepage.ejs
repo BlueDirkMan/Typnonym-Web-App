@@ -33,9 +33,13 @@
                 </form>
             </div>
             <button id="restart-button" class="custom-btn btn-16">Restart</button>
-            <form id="save-form">
-                <button class="custom-btn btn-16">Save</button>
-            </form>
+            <% if (currentUser) { %>
+                <form id="save-form" action="/user/<%= currentUser._id %>/score" method="post">
+                    <input type="number" class="kept-score-input" id="kept-score-input" placeholder="kept-score-input" name="points">
+                    <input type="number" class="kept-wpm-input" id="kept-wpm-input" placeholder="kept-wpm-input" name="wpm">
+                    <button class="custom-btn btn-16">Save</button>
+                </form>
+            <% } %> 
         </div>
     </div>
     

@@ -239,9 +239,15 @@ table {
     display: none;
 }
 
+/* don't show input to user, manually enter through javascript logic for game-page */
+#save-form input {
+    display: none;
+}
+
 #save-form.active {
     display: block;
 }
+
 
 /* Button css credit goes to https://codepen.io/yuhomyan/pen/OJMejWJ, although I made some minor changes */
 button {

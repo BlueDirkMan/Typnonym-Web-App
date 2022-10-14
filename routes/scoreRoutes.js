@@ -21,7 +21,7 @@ scoreRouter.get("/", isLoggedIn, handlerAsync(async (req, res) => {
 // Score Post Route
 scoreRouter.post("/", isLoggedIn, validateScore, handlerAsync(async (req, res) => {
     const { userID } = req.params;
-    const newScore = new Score({ points: req.body.points, date: new Date(), owner: userID })
+    const newScore = new Score({ points: req.body.points, wpm: req.body.wpm, date: new Date(), owner: userID })
     const savedScore = await newScore.save()
     req.flash('success', 'Successfully added score')
     res.redirect(`/user/${userID}`)
