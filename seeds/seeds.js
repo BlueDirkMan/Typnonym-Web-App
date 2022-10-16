@@ -20,40 +20,47 @@ const deleteAll = async() => {
 // Making Two User (for when we need to testing authenticattion and authorization)
 const makeNew = async() => {
     const firstUser = new User({
-        username: "chicken",
-        email: "chicken@gm",
-        password: "nugget",
-        bio: "i love chicken nugget"
+        username: "BlueDirkMan",
+        email: "BlueDirkMan@gm.com",
+        bio: "I play a lot of league. I main Kayn and Yone."
     });
     const secondUser = new User({
         username: "yuno",
         email: "yuno@gm",
-        password: "noyu",
         bio: "i know yuno"
     });
-    firstUser.save();
-    secondUser.save();
+    const thirdUser = new User({
+        username: "chicken",
+        email: "chicken@gm.com",
+        bio: "i love chicken nugget"
+    });
+    let firstUserPassword = "thetimeisnowoldman";
+    let secondUserPassword = "reverseuno";
+    let thirdUserPassword = "nugget";
+    await User.register(firstUser, firstUserPassword);
+    await User.register(secondUser, secondUserPassword)
+    await User.register(thirdUser, thirdUserPassword)
     const firstScore = new Score({
-        points: 10, 
+        points: 800,
+        wpm: 800, 
         date: new Date(),
         owner: firstUser._id
     });
     const secondScore = new Score({
         points: 20, 
+        wpm: 80,
         date: new Date(),
         owner: firstUser._id
     });
     const thirdScore = new Score({
         points: 30, 
+        wpm: 30,
         date: new Date(),
         owner: secondUser._id
     });
     firstScore.save();
     secondScore.save();
     thirdScore.save();
-    // Just realized now that I couldn't just done inserting. ffs
-    console.log(firstScore.date.toLocaleDateString())
-    console.log(firstScore.date.toLocaleTimeString());
 }
 
 

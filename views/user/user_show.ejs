@@ -1,16 +1,29 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <h1>PROFILE PAGE</h1>
-    <h2><%= searchedUser.username %> </h2>
-    <h2><%= searchedUser.email %> </h2>
-    <h2><%= searchedUser.bio %> </h2>
-    <% if (currentUser && currentUser._id.equals(searchedUser._id)) { %>
-        <a href="/user/<%= searchedUser._id %>/edit">edit</a>
-        <a href="/user/<%= searchedUser._id %>/delete">delete</a>
-        <a href="/user/<%= searchedUser._id %>/score">score</a>
-    <% } %>  
-    <h1>Scores</h1>
-    <% for (let score of searchedScore) { %>
-        <p><%= score.points %> </p>    
-        <p><%= score.date %> </p>    
-        <p><%= score.owner.username %> </p>    
-    <% } %>  
+    <div class="page-content-wrapper">
+        <header class="header">
+            <div class="header-content">
+                <h1><%= searchedUser.username %>'s Profile</h1>
+                <% if (currentUser && currentUser._id.equals(searchedUser._id)) { %>
+                <ul class="profile-options">
+                    <li><a href="/user/<%= searchedUser._id %>/edit">edit</a></li>
+                    <span>|</span>
+                    <li><a href="/user/<%= searchedUser._id %>/delete">delete</a></li>
+                    <span>|</span>
+                    <li><a href="/user/<%= searchedUser._id %>/score">score</a></li>
+                </ul>
+                <% } %>  
+            </div>
+            <p><%= searchedUser.bio  %> </p>
+            <hr class="divider">
+        </header>
+        <h1>Recent Games: </h1>
+        <div class="game-history">
+            <% for (let score of searchedScore) { %>
+                <ul class="game-history-details">
+                    <li><p><%= score.points %> points </p></li>
+                    <li><p><%= score.date.toLocaleString() %> </p></li>
+                </ul>
+                <!-- <hr align="left" class="divider-2"> -->
+            <% } %>  
+        </div>
+    </div>

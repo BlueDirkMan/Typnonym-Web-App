@@ -1,149 +1,72 @@
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 }
-
 /* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-    display: block;
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
 }
-
 body {
-    line-height: 1;
+	line-height: 1;
 }
-
-ol,
-ul {
-    list-style: none;
+ol, ul {
+	list-style: none;
 }
-
-blockquote,
-q {
-    quotes: none;
+blockquote, q {
+	quotes: none;
 }
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-    content: '';
-    content: none;
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
 }
-
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 
 
 /* --------------------------------- */
+html {
+    /* background-color: #256D85; */
+    background-color: #89cadf;
+}
+
 .body {
     width: 100%;
     height: 100%;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
 .main-container {
     display: flex;
     justify-content: center;
-}
 
-* {
-    box-sizing: border-box;
 }
 
 .container {
@@ -151,13 +74,14 @@ table {
     flex-direction: column;
     margin: 40px;
     width: 768px;
-    /* background-color: lightgray; */
+    font-size: 1.4rem;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .section {
     margin: 10px;
     padding: 10px;
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
 }
 
 
@@ -172,19 +96,21 @@ table {
 
 
 .typing-box {
+    padding: 1.5rem;
     border-width: 0px;
     background-color: transparent;
     min-height: 28px;
     outline: currentcolor none 0px;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
-    height: 50px;
-    line-height: 48px;
+    height: 70px;
+    line-height: 70px;
     appearance: none;
     resize: none;
     box-sizing: border-box;
     font-size: 18px;
     width: 100%;
     color: rgb(193, 194, 197);
+    background-color: rgb(5, 30, 46);
     display: block;
     text-align: left;
 }
@@ -199,11 +125,11 @@ table {
 }
 
 .score {
-    background-color: lightblue;
+    background-color: #47B5FF;
 }
 
 .wpm {
-    background-color: lightcoral;
+    background-color: #DFF6FF;
 
 }
 
@@ -213,7 +139,12 @@ table {
     justify-content: space-around;
 }
 
-
+#instruction span {
+    font-style: italic;
+    margin: 0rem 0.7rem;
+    font-weight: bold;
+    font-size: 1rem;
+}
 #instruction.active {
     display: none;
 }
@@ -248,6 +179,13 @@ table {
     display: block;
 }
 
+.letter-correct {
+    color: lightgreen
+}
+.letter-incorrect {
+    color: lightcoral;
+}
+
 
 /* Button css credit goes to https://codepen.io/yuhomyan/pen/OJMejWJ, although I made some minor changes */
 button {
@@ -262,7 +200,7 @@ button {
     padding: 10px 25px;
     font-family: 'Lato', sans-serif;
     font-weight: 500;
-    background: transparent;
+    background: lightblue;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -305,18 +243,37 @@ button {
 }
 
 
-
+/* Leaderboard & Show Page*/
 .header {
     font-family: 'Courier New', Courier, monospace;
+    margin: 50px 0px 20px 0px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 600;
 }
 
 .leaderboard-content {
-    padding-top: 2rem;
+    width: 100%; 
+    text-align: right;
 }
 
+.leaderboard-content ul {
+    list-style: lower-roman;
+}
 .leaderboard-scores-box {
     display: flex;
     justify-content: space-between;
+    margin: 10px 0px;
+    background-color: rgb(37,109,133);
+    padding: 20px;
+    border-radius: 5px;
+    color: whitesmoke;
+}
+
+.leaderboard-scores-box:hover {
+    background-color: rgb(53, 126, 150);
 }
 
 .leaderboard-scores-player-scores {
@@ -327,13 +284,55 @@ button {
     margin-left: 4rem;
 }
 
+.page-content-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.divider {
+    width: 100%;
+}
+
+/* .divider-2 {
+    width: 50px;
+    border: dotted 2px;
+} */
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.profile-options {
+    display: flex;
+}
+
+.profile-options a:hover {
+    color: rgb(6, 40, 61);
+    font-weight: 800;
+}
+
+.game-history {
+    margin: 30px 0px;
+}
+
+.game-history-details {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+
+
 /* ---------------------NAVBAR------------------------------------------ */
 
 .navbar {
     display: flex;
     justify-content: center;
     padding: 1rem 1rem;
-    background-color: black;
+    background-color: #06283D;
     color: white;
 }
 
@@ -425,22 +424,41 @@ button {
     .container {
         margin: 40px 50px;
     }
+    .form-box {
+        width: auto;
+        max-width: 60%;
+    }   
+    .leaderboard-scores-player-scores p {
+        margin-left: 1rem;
+    }
 }
 
-
-
-
 /* forms */
+.form-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
 .form-box {
     padding: 2rem;
-    background-color: blue;
+    /* background-color: rgb(148, 177, 190); */
+    background-color: white;
+    width: 500px;
+    /* align-content: center; */
+    border-radius: 5px;
+    text-align: center;
+}
+
+.form-title {
+    font-weight: bold;
+    font-size: 2rem;
 }
 
 .form-input {
-    max-width: px;
     padding: 1rem;
     border-width: 1px;
-    background-color: gray;
+    background-color: rgb(240,243,246);
     min-height: 28px;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
     height: 50px;
@@ -451,18 +469,55 @@ button {
     width: 100%;
     display: block;
     text-align: left;
+    margin-top: 10px;
+    border-radius: 5px;
 }
 
+.form-content {
+    margin-top: 50px;
+}
+
+.form-content div {
+    margin-bottom: 10px;
+    text-align: left;
+}
+.form-content div label {
+    display: none
+}
+.form-button {
+    margin: 50px 0px;
+    /* background-color: rgb(81, 127, 169); */
+    background-color: rgb(61, 180, 242);
+    padding: 10px;
+    width: 50%;
+    cursor: pointer;
+    height: 100%;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 1.5rem
+}
+
+.error {
+    margin: 10px 0;
+    font-size: 1rem;
+}
 
 /* ------- Flash Messages --------*/
 .success-box {
     background-color: lightgreen;
     padding: 10px;
     box-sizing: border-box;
+    margin: 20px 0px;
+    word-break: break-all;
+    text-align: center;
 } 
 
 .error-box {
     background-color: #ffcccb;
     padding: 10px;
     box-sizing: border-box;
+    margin: 20px 0px;
+    white-space: normal;
+    text-align: center;
 } 
+
+

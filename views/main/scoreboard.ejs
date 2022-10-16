@@ -1,26 +1,23 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <h1>Score Board</h1>
-    <div>
-        <ul>
-
-        </ul>
-    </div>
-    <div class="header">
-        <h2 class="leaderboard-title">Leaderboard</h2>
-        <p class="leaderboard-sub-title">Here's a list of all the top-rankers from our users</p>
-    </div>
-    <div class="leaderboard-content">
-        <% for (let user of allUser) { %>
-            <div class="leaderboard-scores-box">
-                <p>
-                    <a href="/user/<%= user._id %> ">
-                        <%= user.username %>
-                    </a>
-                </p>
-                <div class="leaderboard-scores-player-scores">
-                    <p>user.score</p>
-                    <p>user.score</p>
-                </div>
-            </div>
-        <% } %>
+    <div class="page-content-wrapper">
+        <header class="header">
+            <h1 class="leaderboard-title">Leaderboard</h1>
+            <p class="leaderboard-sub-title">Here's a list of all the top-rankers from our players</p>
+        </header>
+        <div class="leaderboard-content">
+            <% for (let score of allScoreDescending) { %>
+                <a href="/user/<%= score.owner._id %> ">
+                    <span class="leaderboard-scores-box">
+                        <p>
+                            <%= startValue %>. <%= score.owner.username %>
+                        </p>
+                        <div class="leaderboard-scores-player-scores">
+                            <p><%= score.wpm %> wpm</p>
+                            <p><%= score.points  %> points </p>
+                        </div>
+                    </span>
+                </a>
+                <% startValue += 1 %> 
+            <% } %>
+        </div>
     </div>

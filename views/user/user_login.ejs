@@ -1,18 +1,21 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <div class="form-box">
-        <h1>User Login</h1>
-        <form id="form" action="/user/login" method="post" novalidate>
-            <div>
-                <label for="usernameFormInput">Username: </label>
-                <input class="form-input" type="text" id="usernameFormInput" placeholder="username" name="username" required>
-                <div class="error error-username">&nbsp;</div>
-            </div>
-            <div>
-                <label for="passwordFormInput">Password: </label>
-                <input class="form-input" type="password" id="passwordFormInput" placeholder="password" name="password"
-                    required>
-                <div class="error error-password">&nbsp;</div>
-            </div>
-            <button>Submit</button>
-        </form>
+    <div class="form-wrapper">
+        <div class="form-box">
+            <h1 class="form-title">User Login</h1>
+            <form id="form" class="form-content" action="/user/login" method="post" novalidate>
+                <div>
+                    <label for="usernameFormInput">Username: </label>
+                    <input class="form-input" type="text" id="usernameFormInput" placeholder="username" name="username"
+                        required>
+                    <div class="error error-username">&nbsp;</div>
+                </div>
+                <div>
+                    <label for="passwordFormInput">Password: </label>
+                    <input class="form-input" type="password" id="passwordFormInput" placeholder="password"
+                        name="password" required>
+                    <div class="error error-password">&nbsp;</div>
+                </div>
+                <button class="form-button">Login</button>
+            </form>
+        </div>
     </div>

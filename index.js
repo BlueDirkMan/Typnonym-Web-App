@@ -45,7 +45,8 @@ app.use(methodOverride("__method"));
 app.engine("ejs", engine)
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
+// 
+app.use('/node_modules', express.static(__dirname + '/node_modules/'));
 
 // Mongoose Connection
 mongoose.connect('mongodb://127.0.0.1:27017/personalTypingApp')
@@ -92,8 +93,9 @@ app.get("/", (req, res) => {
 
 // Scoreboard
 app.get("/scoreboard", async (req, res) => {
-    const allUser = await User.find({});
-    res.render("./main/scoreboard.ejs", { allUser: allUser })
+    const allScoreDescending = await Score.find({}).sort({points: -1}).limit(10).populate('owner')
+    console.log(allScoreDescending)
+    res.render("./main/scoreboard.ejs", { allScoreDescending: allScoreDescending, startValue: 1})
 })
 
 

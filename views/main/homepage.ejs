@@ -1,45 +1,41 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <div class="main-container">
-        <div class="container">
-            <div class="section timerboard">
-                <div class="timer">
-                    <p><span id="timer-display">10</span>s </p>
-                </div>
-                <div class="round">
-                    <p>Round 1 </p>
-                </div>
-            </div>
-
-            <div class="section scoreboard">
-                <div class="score">
-                    <p>Score: <span id="score-display">0</span></p>
-                </div>
-                <div class="wpm">
-                    <p>WPM: <span id="wpm-display">0</span></p>
-                </div>
-            </div>
-
-            <div class="section instruction-timer">
-                <p id="instruction">Type start to begin</p>
-                <div id="word-display">
-                    <p id="synonym-display">Synonym</p>
-                    <p id="vocab-display">Vocabulary</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <form id="typing-box-form">
-                    <input type="text" class="typing-box" id="typing-box-input" placeholder="start">
-                </form>
-            </div>
-            <button id="restart-button" class="custom-btn btn-16">Restart</button>
-            <% if (currentUser) { %>
-                <form id="save-form" action="/user/<%= currentUser._id %>/score" method="post">
-                    <input type="number" class="kept-score-input" id="kept-score-input" placeholder="kept-score-input" name="points">
-                    <input type="number" class="kept-wpm-input" id="kept-wpm-input" placeholder="kept-wpm-input" name="wpm">
-                    <button class="custom-btn btn-16">Save</button>
-                </form>
-            <% } %> 
+    <div class="section timerboard">
+        <div class="timer">
+            <p><span id="timer-display">10</span>s </p>
+        </div>
+        <div class="round">
+            <p>Round <span id="round-number">1</span></p>
         </div>
     </div>
-    
+
+    <div class="section scoreboard">
+        <div class="score">
+            <p>Score: <span id="score-display">0</span></p>
+        </div>
+        <div class="wpm">
+            <p>WPM: <span id="wpm-display">0</span></p>
+        </div>
+    </div>
+
+    <div class="section instruction-timer">
+        <p id="instruction">Type <span>start</span> to begin</p>
+        <div id="word-display">
+            <p id="synonym-display">Synonym</p>
+            <p id="vocab-display">Vocabulary</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <form id="typing-box-form">
+            <input type="text" class="typing-box" id="typing-box-input" placeholder="start" autocomplete="off">
+        </form>
+    </div>
+    <button id="restart-button" class="custom-btn btn-16">Restart</button>
+    <% if (currentUser) { %>
+        <form id="save-form" action="/user/<%= currentUser._id %>/score" method="post">
+            <input type="number" class="kept-score-input" id="kept-score-input" placeholder="kept-score-input"
+                name="points">
+            <input type="number" class="kept-wpm-input" id="kept-wpm-input" placeholder="kept-wpm-input" name="wpm">
+            <button class="custom-btn btn-16">Save</button>
+        </form>
+    <% } %>
