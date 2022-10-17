@@ -21,7 +21,8 @@ import session from "express-session";
 import flash from "connect-flash";
 import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
-
+import mongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -36,17 +37,50 @@ const __dirname = dirname(__filename);
 // app.use(express.static(path.join(__dirname, "/public")));
 // app.use(methodOverride("__method"));
 
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("__method"));
+app.use(mongoSanitize())
+app.use(helmet())
+
+const scriptSrcUrls = [
+    // Imported scripts here (if needed for future versions)
+];
+const styleSrcUrls = [
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+];
+const connectSrcUrls = [
+    "https://api.dictionaryapi.dev/api/v2/entries/en/"
+];
+
+const fontSrcUrls = ["https://fonts.gstatic.com", "https://fonts.googleapis.com/"];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            "default-src": [],
+            "connect-src": ["'self'", ...connectSrcUrls],
+            "script-src": ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            "style-src": ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            "worker-src": ["'self'", "blob:"],
+            "object-src": [],
+            "img-src": [
+                "'self'",
+                "blob:",
+                "data:",
+            ],
+            "font-src": ["'self'", ...fontSrcUrls],
+        },
+    })
+);
+
+
 
 app.engine("ejs", engine)
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-// 
-app.use('/node_modules', express.static(__dirname + '/node_modules/'));
+
 
 // Mongoose Connection
 mongoose.connect('mongodb://127.0.0.1:27017/personalTypingApp')
@@ -59,15 +93,18 @@ mongoose.connect('mongodb://127.0.0.1:27017/personalTypingApp')
     });
 
 const sessionCofiguration = {
+    name: "typnonymSession",
     secret: "secretbetweenme",
     resave: false,
     saveUninitialized: true,
     cookie: { 
         httpOnly: true, 
+        // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+
 app.use(session(sessionCofiguration))
 app.use(flash())
 
@@ -80,6 +117,7 @@ passport.deserializeUser(User.deserializeUser())
 
 
 app.use((req, res, next) => {
+    console.log(req.query)
     res.locals.flashSuccess = req.flash("success");
     res.locals.flashError = req.flash("error");
     res.locals.currentUser = req.user;
@@ -114,8 +152,11 @@ app.all("*", (req, res, next) => {
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
-    const { status = 500, message } = err
-    res.status(status).render("error.ejs", { message: message })
+    const { status = 500 } = err;
+    if (!err.message) { 
+        err.message = "Unexpected error have occurred"
+    }
+    res.status(status).render("error.ejs", { err: err })
 })
 
 

@@ -3,7 +3,7 @@ import { User } from "../models/user.js";
 import { Score } from "../models/score.js";
 import { handlerAsync } from "../utils/handlerAsync.js";
 import passport from "passport";
-import { isLoggedIn, isAccountOwner } from "../utils/utitlityMiddleware.js";
+import { isLoggedIn, isAccountOwner, validateUser } from "../utils/utitlityMiddleware.js";
 
 export const userRouter = express.Router()
 
@@ -14,7 +14,7 @@ userRouter.get("/register", (req, res) => {
 })
 
 // Register Post Route
-userRouter.post("/", handlerAsync(async (req, res, next) => {
+userRouter.post("/", validateUser, handlerAsync(async (req, res, next) => {
     try {
         const { username, password, email } = req.body; 
         const newUser = new User({ username, email });

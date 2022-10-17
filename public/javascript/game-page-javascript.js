@@ -116,7 +116,6 @@ const gameLoop = async function () {
                         noDuplicate = false;
                     }
                 }
-
             }
             synonymBank.splice(0, synonymBank.length, ...smallerSynonymList);
             // synonymBank.splice(0, synonymBank.length, ...newSynonymList);
@@ -127,6 +126,7 @@ const gameLoop = async function () {
             // wordIndex += 1
             console.log(synonymBank)
             console.log("Finish change word")
+            return true
         } else {
             // wordIndex += 1
             await changeWord()
@@ -189,7 +189,7 @@ const gameLoop = async function () {
         } 
     }
     
-    // Game Logic   
+    // Game Logic  
     await changeWord()
     await newSynonym()
     // Have to be moved below the two async function because new typingBoxFunction logic

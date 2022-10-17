@@ -1,11 +1,26 @@
 import Joi from "joi";
-import { scoreJoiSchema } from "./joiSchema.js"
+import { scoreJoiSchema, userJoiSchema } from "./joiSchema.js"
 import { AppError } from "./AppError.js";
 import { User } from "../models/user.js";
 
 // Middleware to validate score through Joi schema. Throws Error if validation failed, if not passes to next
 export const validateScore = (req, res, next) => {
     const validationResult = scoreJoiSchema.validate(req.body)
+    console.log("Validation Result:")
+    console.log(validationResult)
+    const { error } = validationResult
+    if (validationResult.error) {
+        const message = error.details.map(el => el.message).join(",")
+        throw new AppError(message, 400)
+    } 
+    else {
+        next()
+    }
+}
+
+// Middleware to validate user through Joi schema. Throws Error if validation failed, if not passes to next
+export const validateUser = (req, res, next) => {
+    const validationResult = userJoiSchema.validate(req.body)
     console.log("Validation Result:")
     console.log(validationResult)
     const { error } = validationResult

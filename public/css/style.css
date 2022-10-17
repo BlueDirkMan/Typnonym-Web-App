@@ -521,3 +521,16 @@ button {
 } 
 
 
+/* Erorr Message Page */
+.error-page-wrapper {
+    background-color: lightcoral;
+    padding: 0px 30px;
+    min-height: 400px;
+}
+
+.error-found-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 50%;
+}
