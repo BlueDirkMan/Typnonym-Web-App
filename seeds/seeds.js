@@ -34,12 +34,19 @@ const makeNew = async() => {
         email: "chicken@gm.com",
         bio: "i love chicken nugget"
     });
+    const fourthUser = new User({
+        username: "gravityWall",
+        email: "gravityWall@gm.com",
+        bio: "This is a very good song"
+    });
     let firstUserPassword = "thetimeisnowoldman";
     let secondUserPassword = "reverseuno";
     let thirdUserPassword = "nugget";
+    let fourthUserPassword = "gravityWall"
     await User.register(firstUser, firstUserPassword);
     await User.register(secondUser, secondUserPassword)
     await User.register(thirdUser, thirdUserPassword)
+    await User.register(fourthUser, fourthUserPassword)
     const firstScore = new Score({
         points: 800,
         wpm: 800, 
@@ -58,9 +65,16 @@ const makeNew = async() => {
         date: new Date(),
         owner: secondUser._id
     });
+    const fourthScore = new Score({
+        points: 999, 
+        wpm: 999,
+        date: new Date(),
+        owner: fourthUser._id
+    });
     firstScore.save();
     secondScore.save();
     thirdScore.save();
+    fourthScore.save()
 }
 
 

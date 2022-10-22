@@ -1,28 +1,11 @@
 import express from "express";
-import { User } from "../models/user.js"; 
-import { Score } from "../models/score.js";
 import { handlerAsync } from "../utils/handlerAsync.js";
 import { validateScore, isLoggedIn } from "../utils/utitlityMiddleware.js";
+import scoreController from "../controllers/scoreController.js";
+import { createScore } from "../controllers/scoreController.js";
 
 export const scoreRouter = express.Router({ mergeParams: true});
 
-// Score adding page - will be done through homepage after sessions is implemented
-scoreRouter.get("/", isLoggedIn, handlerAsync(async (req, res) => {
-    const { userID } = req.params;
-    const searchedUser = await User.findById(userID)
-    if (!searchedUser) {
-        req.flash("error", "Cannot find user with specified ID")
-        return res.redirect("/")
-    }
-    res.render("./user/user_score.ejs", { searchedUser: searchedUser })
-}))
-
-
 // Score Post Route
-scoreRouter.post("/", isLoggedIn, validateScore, handlerAsync(async (req, res) => {
-    const { userID } = req.params;
-    const newScore = new Score({ points: req.body.points, wpm: req.body.wpm, date: new Date(), owner: userID })
-    const savedScore = await newScore.save()
-    req.flash('success', 'Successfully added score')
-    res.redirect(`/user/${userID}`)
-}))
+scoreRouter.post("/", isLoggedIn, validateScore, handlerAsync(createScore))
+

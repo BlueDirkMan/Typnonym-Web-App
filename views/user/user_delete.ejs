@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete</title>
-</head>
-<body>
-    <h1>Confirm Delete</h1>
-    <form action="/user/<%= searchedUser._id %>?__method=DELETE" method="post">
-        <button>DELETE</button>
-    </form>    
-</body>
-</html>
+<% layout("/layouts/boilerplate.ejs") %>
+    <div class="form-wrapper">
+        <div class="form-box">
+            <h1 class="form-title">Confirm Delete</h1>
+            <form id="form" action="/user/<%= searchedUser._id %>?__method=DELETE" method="post" novalidate>
+                <button class="form-button">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    
+    

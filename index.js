@@ -56,12 +56,14 @@ const connectSrcUrls = [
 ];
 
 const fontSrcUrls = ["https://fonts.gstatic.com", "https://fonts.googleapis.com/"];
+
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            "default-src": [],
+            "default-src": ["'self'"],
             "connect-src": ["'self'", ...connectSrcUrls],
             "script-src": ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            "script-src-attr": [],
             "style-src": ["'self'", "'unsafe-inline'", ...styleSrcUrls],
             "worker-src": ["'self'", "blob:"],
             "object-src": [],
@@ -74,6 +76,7 @@ app.use(
         },
     })
 );
+
 
 
 

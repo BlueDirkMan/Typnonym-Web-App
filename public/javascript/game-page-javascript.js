@@ -84,53 +84,40 @@ const dictionaryFetch = async function (randomWord) {
 }
 
 const gameLoop = async function () {
-    // Game variables
-    timeLimit = Date.now() + 10000;
-    timerTime = 0
-
-    startTime = Date.now()
-    trackedTime = 0
-
-    cpm = 0
-    wpm = 0
-
-    gameRestart = false
-
     // Game Function
     async function changeWord() {
         console.log("---")
         console.log("Change Word Function")
-        currentVocab = randomWord()
-        // const newSynonymList = await dictionaryFetch(wordBank[wordIndex])
-        const newSynonymList = await dictionaryFetch(currentVocab)
-        console.log(newSynonymList)
-        if (newSynonymList.length >= 5) {
-            const smallerSynonymList = []
-            for (let i = 0; i<5; i++) {
-                let noDuplicate = true
-                while (noDuplicate) {
-                    let randomIndex = randomNumberFromArray(newSynonymList)
-                    let chosenSynonym = newSynonymList[randomIndex]
-                    if (!smallerSynonymList.includes(chosenSynonym)) {
-                        smallerSynonymList.push(chosenSynonym)
-                        noDuplicate = false;
+        // Implement searchAgain while loop, to not resolve function untils a suitable word is found, so that
+        // game timer does not run while word is still being fetch
+        let searchAgain = true
+        while (searchAgain === true) {
+            currentVocab = randomWord()
+            const newSynonymList = await dictionaryFetch(currentVocab)
+            console.log("SEARCHED: Synonym List")
+            console.log(newSynonymList)
+            if (newSynonymList.length >= 5) {
+                const smallerSynonymList = []
+                for (let i = 0; i<5; i++) {
+                    let noDuplicate = true
+                    while (noDuplicate) {
+                        let randomIndex = randomNumberFromArray(newSynonymList)
+                        let chosenSynonym = newSynonymList[randomIndex]
+                        if (!smallerSynonymList.includes(chosenSynonym)) {
+                            smallerSynonymList.push(chosenSynonym)
+                            noDuplicate = false;
+                        }
                     }
                 }
+                synonymBank.splice(0, synonymBank.length, ...smallerSynonymList);
+                console.log(synonymBank.length)
+                vocabDisplay.innerText = currentVocab
+                console.log(synonymBank)
+                console.log("Finish change word")
+                searchAgain = false
             }
-            synonymBank.splice(0, synonymBank.length, ...smallerSynonymList);
-            // synonymBank.splice(0, synonymBank.length, ...newSynonymList);
-            // synonymBank.splice(5, synonymBank.length)
-            console.log(synonymBank.length)
-            // vocabDisplay.innerText = wordBank[wordIndex]
-            vocabDisplay.innerText = currentVocab
-            // wordIndex += 1
-            console.log(synonymBank)
-            console.log("Finish change word")
-            return true
-        } else {
-            // wordIndex += 1
-            await changeWord()
         }
+        
 
     }
     async function newSynonym() {
@@ -188,10 +175,12 @@ const gameLoop = async function () {
             typingInput.value = null;
         } 
     }
-    
     // Game Logic  
     await changeWord()
+    console.log("-------CHANGE WORD RESOLVED-----------")
     await newSynonym()
+    console.log("-------NEW SYNONYM RESOLVED-----------")
+    console.log(timerDisplay.innerHTML)
     // Have to be moved below the two async function because new typingBoxFunction logic
     // Since the synonym would not exist, the forEach function would not run, as such the if logic would 
     // run right away, calling newSynonym function and adding score (ie. messing with our game logic)
@@ -212,8 +201,23 @@ const gameLoop = async function () {
         saveForm.classList.toggle('active')
     }
 
+    let index = 0
 
+
+    // Game variables (set right before timer start to avoid situation where there is delay between fetching data
+    // and running timer
+    timeLimit = Date.now() + 10000;
+    timerTime = 0
+
+    startTime = Date.now()
+    trackedTime = 0
+
+    cpm = 0
+    wpm = 0
+
+    gameRestart = false
     // Start Timer
+    console.log("---TIMER IS STARTIN---")
     const interval = setInterval(function () {
         // For Timer Display
         let elapsedTime = timeLimit - Date.now();
@@ -222,7 +226,10 @@ const gameLoop = async function () {
         // For Keeping Track of Time
         let passedTime = Date.now() - startTime;
         trackedTime = (passedTime / 1000).toFixed(3);
-
+        if (index < 3) {
+            console.log(timerDisplay.innerHTML)
+            index += 1
+        }
         // Game End Logic
         if (timerTime < 0 || gameRestart === true) {
             clearInterval(interval)

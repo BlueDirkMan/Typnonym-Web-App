@@ -35,5 +35,5 @@ export const userJoiSchema = improvedJoi.object({
     email: improvedJoi.string().required().email().max(100).escapeHTML(),
     bio: improvedJoi.string().max(100).escapeHTML(),
     username: improvedJoi.string().required().max(100).escapeHTML(),
-    password: improvedJoi.number().required().min(6).max(100)
+    password: improvedJoi.string().required().min(6).max(100)
 });

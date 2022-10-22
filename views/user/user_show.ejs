@@ -8,12 +8,10 @@
                     <li><a href="/user/<%= searchedUser._id %>/edit">edit</a></li>
                     <span>|</span>
                     <li><a href="/user/<%= searchedUser._id %>/delete">delete</a></li>
-                    <span>|</span>
-                    <li><a href="/user/<%= searchedUser._id %>/score">score</a></li>
                 </ul>
                 <% } %>  
             </div>
-            <p><%= searchedUser.bio  %> </p>
+            <p class="profile-bio"><%= searchedUser.bio  %> </p>
             <hr class="divider">
         </header>
         <h1>Recent Games: </h1>
@@ -23,7 +21,6 @@
                     <li><p><%= score.points %> points </p></li>
                     <li><p><%= score.date.toLocaleString() %> </p></li>
                 </ul>
-                <!-- <hr align="left" class="divider-2"> -->
             <% } %>  
         </div>
     </div>

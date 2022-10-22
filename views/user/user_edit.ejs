@@ -1,18 +1,20 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <div class="form-box">
-        <h1>User Edit Details</h1>
-        <form id="form" action="/user/<%= searchedUser._id %>?__method=PATCH" method="post" novalidate>
-            <div>
-                <label for="emailFormInput">Email Address: </label>
-                <input class="form-input" type="email" id="emailFormInput" placeholder="name@example.com" name="email"
-                    value="<%= searchedUser.email %>" required>
-                <div class="error error-email">&nbsp;</div>
-            </div>
-            <div>
-                <label for="bio">Bio: </label>
-                <textarea id="bioTextArea" maxlength="100" name="bio" required><%= searchedUser.bio %>
+    <div class="form-wrapper">
+        <div class="form-box">
+            <h1>User Edit Details</h1>
+            <form id="form" class="form-edit-content" action="/user/<%= searchedUser._id %>?__method=PATCH" method="post" novalidate>
+                <div>
+                    <label for="emailFormInput">Change Email Address: </label>
+                    <input class="form-input" type="email" id="emailFormInput" placeholder="name@example.com"
+                        name="email" value="<%= searchedUser.email %>" required>
+                    <div class="error error-email">&nbsp;</div>
+                </div>
+                <div class="form-bio">
+                    <label for="bio">Update Bio: </label>
+                    <textarea id="bioTextArea" class="bio-text-area" maxlength="100" name="bio" required><%= searchedUser.bio %>
                 </textarea>
-            </div>
-            <button>Submit</button>
-        </form>
+                </div>
+                <button>Submit</button>
+            </form>
+        </div>
     </div>
