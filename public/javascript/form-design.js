@@ -23,7 +23,7 @@ form.addEventListener('submit', (event) => {
     };
 
     // Since not all forms would have everything given in this page, although we want this script to be able
-    // to be used for all forms, I believe we would add a catch, so that it would continue despite a TypeError
+    // to be used for all forms, I add catch, so that it would continue despite a TypeError
     for (let i of error) {
         if (i.classList.contains('error-username')) {
             errorElements.username = i

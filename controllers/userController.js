@@ -18,9 +18,6 @@ const registerUser = async (req, res, next) => {
         const { username, password, email } = req.body; 
         const newUser = new User({ username, email });
         const createdUser = await User.register(newUser, password)
-        console.log("-------------")
-        console.log("New User Registered")
-        console.log(createdUser)
         req.login(createdUser, err => {
             if(err) return next(err);
             req.flash("success", "User Account Registration Completed");
@@ -41,7 +38,6 @@ export const renderLoginForm = (req, res) => {
 export const userLogin = (req, res) => {
     req.flash("success", "Successfully login")
     const redirectURL = req.session.lastVisited || "/"
-    console.log(redirectURL)
     res.redirect(redirectURL)                          
 }
 
@@ -65,11 +61,6 @@ export const renderUserShow = async (req, res) => {
         return res.redirect("/")
     }
     const searchedScore = await Score.find({ owner: searchedUser._id}).populate('owner')
-    console.log("-------------")
-    console.log("Find User For Profile Page")
-    console.log(searchedUser)
-    console.log("With Scores: ")
-    console.log(searchedScore)
     res.render("./user/user_show.ejs", { searchedUser: searchedUser, searchedScore: searchedScore, title: searchedUser.username})
 }
 
@@ -81,9 +72,6 @@ export const renderUserEdit = async (req, res) => {
         req.flash("error", "Cannot find user with specified ID")
         return res.redirect("/")
     }
-    console.log("-------------")
-    console.log("Find User For Edit Page")
-    console.log(searchedUser)
     res.render("./user/user_edit.ejs", { searchedUser: searchedUser, title: "Edit Profile"})
 }
 
@@ -127,5 +115,5 @@ userController.userUpdate = userUpdate
 userController.renderDeleteForm = renderDeleteForm
 userController.deleteUser = deleteUser
 
-
+// Export controller
 export default userController

@@ -10,9 +10,14 @@
     <% } else { %>
         <title>Typnonym</title>
     <% } %> 
+    <% const formPages = ["Register", "Login", "Edit Profile"]; %>
+    <% if (typeof title != "undefined" && formPages.includes(title)) { %> 
+        <script defer src="/javascript/form-design.js"></script>
+    <% } else if (typeof title != "undefined" && title === "home") { %>
+        <script defer src="/javascript/game-page-javascript.js"></script>
+    <% } %>
+    <script defer src="/javascript/navbar-logic.js"></script>
     <link rel="stylesheet" href="/css/style.css">
-    <script defer src="/javascript/game-page-javascript.js"></script>
-    <script defer src="/javascript/form-design.js"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">

@@ -29,14 +29,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 
-// app.engine('ejs', engine);
-// app.use(express.urlencoded({extended: true}));
-// app.use(express.json());
-// app.set("view engine", "ejs");
-// app.set("views", path.join(__dirname, "/views"));
-// app.use(express.static(path.join(__dirname, "/public")));
-// app.use(methodOverride("__method"));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -76,8 +68,6 @@ app.use(
         },
     })
 );
-
-
 
 
 app.engine("ejs", engine)
@@ -120,7 +110,6 @@ passport.deserializeUser(User.deserializeUser())
 
 
 app.use((req, res, next) => {
-    console.log(req.query)
     res.locals.flashSuccess = req.flash("success");
     res.locals.flashError = req.flash("error");
     res.locals.currentUser = req.user;
@@ -129,23 +118,17 @@ app.use((req, res, next) => {
 
 // Homepage + typing page
 app.get("/", (req, res) => {
-    res.render("./main/homepage.ejs")
+    res.render("./main/homepage.ejs", { title: "home"})
 })
 
 // Scoreboard
 app.get("/scoreboard", async (req, res) => {
     const allScoreDescending = await Score.find({}).sort({points: -1}).limit(10).populate('owner')
-    console.log(allScoreDescending)
     res.render("./main/scoreboard.ejs", { allScoreDescending: allScoreDescending, startValue: 1})
 })
 
-
-
 app.use('/user', userRouter)
 app.use('/user/:userID/score', scoreRouter)
-
-
-
 
 
 // Catch everything that does not match above

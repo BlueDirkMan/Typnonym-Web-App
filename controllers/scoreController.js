@@ -4,8 +4,6 @@ const scoreController = new Object()
 
 // Create New Score Logic To Be Passed to score POST route
 export const createScore = async (req, res) => {
-    console.log("req")
-    console.log(req)
     const { userID } = req.params;
     const newScore = new Score({ points: req.body.points, wpm: req.body.wpm, date: new Date(), owner: userID })
     const savedScore = await newScore.save()
@@ -16,5 +14,5 @@ export const createScore = async (req, res) => {
 // Make functions available under default export object, but leaving it as a standalone export too for flexibility
 scoreController.createScore = createScore
 
-// 
+// Export controller
 export default scoreController

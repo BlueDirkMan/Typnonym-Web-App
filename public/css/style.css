@@ -1,3 +1,7 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -44,9 +48,8 @@ table {
 
 
 
-/* --------------------------------- */
+/* ------------Styling-------------- */
 html {
-    /* background-color: #256D85; */
     background-color: #89cadf;
 }
 
@@ -81,7 +84,6 @@ a {
 .section {
     margin: 10px;
     padding: 10px;
-    /* background-color: aliceblue; */
 }
 
 
@@ -121,7 +123,7 @@ a {
 
 .scoreboard div {
     width: 50%;
-    padding: 20px
+    padding: 20px;
 }
 
 .score {
@@ -170,6 +172,10 @@ a {
     display: none;
 }
 
+#synonym-display {
+    font-weight: bold;
+}
+
 /* don't show input to user, manually enter through javascript logic for game-page */
 #save-form input {
     display: none;
@@ -179,11 +185,21 @@ a {
     display: block;
 }
 
+/* Height is based on the button size 40 + (10*2) = 60 */
+.button-wrapper {
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.typed-word-display-item {
+    margin-bottom: 20px;
+}
+
 .letter-correct {
-    color: lightgreen
+    color: lightgreen;
 }
 .letter-incorrect {
-    color: lightcoral;
+    color: red; /*before was light coral */
 }
 
 
@@ -294,11 +310,6 @@ button {
     width: 100%;
 }
 
-/* .divider-2 {
-    width: 50px;
-    border: dotted 2px;
-} */
-
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -349,6 +360,9 @@ button {
 
 .nav-title {
     font-size: 1.4rem;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-style: italic;
 }
 
 .nav-links ul {
@@ -446,10 +460,8 @@ button {
 
 .form-box {
     padding: 2rem;
-    /* background-color: rgb(148, 177, 190); */
     background-color: white;
     width: 500px;
-    /* align-content: center; */
     border-radius: 5px;
     text-align: center;
 }
@@ -524,7 +536,6 @@ button {
 }
 .form-button {
     margin: 50px 0px;
-    /* background-color: rgb(81, 127, 169); */
     background-color: rgb(61, 180, 242);
     padding: 10px;
     width: 50%;

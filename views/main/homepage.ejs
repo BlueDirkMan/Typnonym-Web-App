@@ -30,12 +30,18 @@
             <input type="text" class="typing-box" id="typing-box-input" placeholder="start" autocomplete="off">
         </form>
     </div>
-    <button id="restart-button" class="custom-btn btn-16">Restart</button>
-    <% if (currentUser) { %>
+    <div class="button-wrapper">
+        <button id="restart-button" class="custom-btn btn-16">Restart</button>
+        <% if (currentUser) { %>
         <form id="save-form" action="/user/<%= currentUser._id %>/score" method="post">
             <input type="number" class="kept-score-input" id="kept-score-input" placeholder="kept-score-input"
                 name="points">
             <input type="number" class="kept-wpm-input" id="kept-wpm-input" placeholder="kept-wpm-input" name="wpm">
             <button class="custom-btn btn-16">Save</button>
         </form>
-    <% } %>
+        <% } %> 
+    </div>
+    
+    <div class="section" id="typed-word-display">
+        
+    </div>

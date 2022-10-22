@@ -1,17 +1,4 @@
-// Navbar Logic
-const toggleButton = document.getElementsByClassName('toggle-button')[0]
-const navLinks = document.getElementsByClassName('nav-links')[0]
-const scoreDisplay = document.getElementById("score-display")
-const vocabDisplay = document.getElementById("vocab-display")
-const synonymDisplay = document.getElementById("synonym-display")
-
-toggleButton.addEventListener('click', () => {
-    navLinks.classList.toggle('active')
-})
-
-
-
-// ----------------------------------------
+// -----------Typing Logic-------------------
 const typingBox = document.getElementById("typing-box-form");
 const typingInput = document.getElementById("typing-box-input")
 const timerDisplay = document.getElementById("timer-display")
@@ -22,6 +9,7 @@ const saveForm = document.getElementById("save-form")
 const keptScoreInput = document.getElementById("kept-score-input")
 const keptWPMInput = document.getElementById("kept-wpm-input")
 const roundNumber = document.getElementById("round-number")
+const typedWordDisplay = document.getElementById("typed-word-display")
 
 let currentScore = 0
 let wordIndex = 0
@@ -57,7 +45,7 @@ const startFunction = async function (event) {
     if (typingInput.value === "start") {
         typingInput.removeAttribute("placeholder")
         typingInput.value = null
-        const game = await gameLoop().catch((e) => { console.log(`ERROR: ${e}`)})
+        const game = await gameLoop().catch((e) => {console.log(e)})
     }
 }
 
@@ -66,9 +54,6 @@ typingInput.addEventListener('input', startFunction)
 
 
 const dictionaryFetch = async function (randomWord) {
-    console.log("---")
-    console.log("Dictionary Fetch Function")
-    console.log(`Fetching: ${randomWord}`)
     const fetchedList = []
     await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${randomWord}`)
         .then((response) => response.json())
@@ -79,41 +64,39 @@ const dictionaryFetch = async function (randomWord) {
                 }
             }
         })
-    console.log(fetchedList)
     return fetchedList
 }
 
 const gameLoop = async function () {
     // Game Function
     async function changeWord() {
-        console.log("---")
-        console.log("Change Word Function")
         // Implement searchAgain while loop, to not resolve function untils a suitable word is found, so that
         // game timer does not run while word is still being fetch
         let searchAgain = true
         while (searchAgain === true) {
             currentVocab = randomWord()
             const newSynonymList = await dictionaryFetch(currentVocab)
-            console.log("SEARCHED: Synonym List")
-            console.log(newSynonymList)
             if (newSynonymList.length >= 5) {
                 const smallerSynonymList = []
-                for (let i = 0; i<5; i++) {
-                    let noDuplicate = true
-                    while (noDuplicate) {
-                        let randomIndex = randomNumberFromArray(newSynonymList)
-                        let chosenSynonym = newSynonymList[randomIndex]
-                        if (!smallerSynonymList.includes(chosenSynonym)) {
-                            smallerSynonymList.push(chosenSynonym)
-                            noDuplicate = false;
+                // If the synonym list is too small, we just splice it and don't take random words
+                if (newSynonymList.length >= 15) {
+                    for (let i = 0; i<5; i++) {
+                        let noDuplicate = true
+                        while (noDuplicate) {
+                            let randomIndex = randomNumberFromArray(newSynonymList)
+                            let chosenSynonym = newSynonymList[randomIndex]
+                            if (!smallerSynonymList.includes(chosenSynonym) && chosenSynonym.match(/^[\w\-\s]+$/)) {
+                                smallerSynonymList.push(chosenSynonym)
+                                noDuplicate = false;
+                            }
                         }
                     }
-                }
-                synonymBank.splice(0, synonymBank.length, ...smallerSynonymList);
-                console.log(synonymBank.length)
+                    synonymBank.splice(0, synonymBank.length, ...smallerSynonymList);
+                } else {
+                    synonymBank.splice(0, synonymBank.length, ...newSynonymList);
+                    synonymBank.splice(5, synonymBank.length)
+                }   
                 vocabDisplay.innerText = currentVocab
-                console.log(synonymBank)
-                console.log("Finish change word")
                 searchAgain = false
             }
         }
@@ -121,11 +104,21 @@ const gameLoop = async function () {
 
     }
     async function newSynonym() {
-        console.log("---")
-        console.log("New Synonym Function")
         if (synonymIndex === synonymBank.length) {  // remember length is 3 if array have 3 words, if synonymIndex is 5, is have already went through 5 words
+            // Make a div containing all typed characters
+            const typedWordBox = document.createElement('div')
+            typedWordBox.classList.add("typed-word-display-item");
+            const typedVocab = document.createElement("h3")
+            typedVocab.innerText = currentVocab
+            typedWordBox.appendChild(typedVocab)
+            for (let synonymItem of synonymBank) {
+                const typedSynonyms = document.createElement('span')
+                typedSynonyms.innerText = synonymItem + ", "
+                typedWordBox.appendChild(typedSynonyms)
+            } 
+            typedWordDisplay.appendChild(typedWordBox)
+            // Change the word and reset index
             await changeWord()
-            console.log("changed word")
             synonymIndex = 0
         }
         synonymDisplay.innerText = ""
@@ -175,12 +168,17 @@ const gameLoop = async function () {
             typingInput.value = null;
         } 
     }
+
+    // Remove typed word from last sesion
+    while (typedWordDisplay.firstChild) {
+        typedWordDisplay.removeChild(typedWordDisplay.firstChild);
+    }
+    const typedWordDisplayDivider = document.createElement("hr")
+    typedWordDisplay.appendChild(typedWordDisplayDivider)
     // Game Logic  
     await changeWord()
-    console.log("-------CHANGE WORD RESOLVED-----------")
     await newSynonym()
-    console.log("-------NEW SYNONYM RESOLVED-----------")
-    console.log(timerDisplay.innerHTML)
+
     // Have to be moved below the two async function because new typingBoxFunction logic
     // Since the synonym would not exist, the forEach function would not run, as such the if logic would 
     // run right away, calling newSynonym function and adding score (ie. messing with our game logic)
@@ -200,10 +198,7 @@ const gameLoop = async function () {
     if (saveForm && saveForm.classList.contains('active')) {
         saveForm.classList.toggle('active')
     }
-
     let index = 0
-
-
     // Game variables (set right before timer start to avoid situation where there is delay between fetching data
     // and running timer
     timeLimit = Date.now() + 10000;
@@ -217,7 +212,6 @@ const gameLoop = async function () {
 
     gameRestart = false
     // Start Timer
-    console.log("---TIMER IS STARTIN---")
     const interval = setInterval(function () {
         // For Timer Display
         let elapsedTime = timeLimit - Date.now();
@@ -227,7 +221,6 @@ const gameLoop = async function () {
         let passedTime = Date.now() - startTime;
         trackedTime = (passedTime / 1000).toFixed(3);
         if (index < 3) {
-            console.log(timerDisplay.innerHTML)
             index += 1
         }
         // Game End Logic

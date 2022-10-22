@@ -17,7 +17,7 @@ const deleteAll = async() => {
     const deleteAllScore = await Score.deleteMany({});
 }
 
-// Making Two User (for when we need to testing authenticattion and authorization)
+// Making Four User 
 const makeNew = async() => {
     const firstUser = new User({
         username: "BlueDirkMan",

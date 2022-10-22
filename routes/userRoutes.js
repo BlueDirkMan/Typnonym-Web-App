@@ -21,15 +21,12 @@ userRouter.get("/login", userController.renderLoginForm)
 // Login Post Route
 userRouter.post("/login", passport.authenticate('local', {failureFlash: true, failureRedirect: "/user/login", keepSessionInfo: true,}), userController.userLogin)
 
-
 // Logout Route
 userRouter.get("/logout", userController.userLogout)
 
 
-// Profile/Show Page   --- I don't think we can do this page access until we have authentication and auth
-// We can manually type the ID in though
+// Profile/Show Page  
 userRouter.get("/:userID", handlerAsync(userController.renderUserShow))
-
 
 // Edit Form Page
 userRouter.get("/:userID/edit", isLoggedIn, isAccountOwner, handlerAsync(userController.renderUserEdit))
